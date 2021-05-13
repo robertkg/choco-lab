@@ -1,0 +1,15 @@
+groups:
+  - name: containers
+    targets:
+      - name: chocosrv
+        uri: 127.0.0.1:55986
+      - name: chococli
+        uri: 127.0.0.1:55987
+    config:
+      transport: winrm
+      winrm:
+        user: Bolt
+        password: Passw0rd
+        basic-auth-only: true
+        ssl: true
+        ssl-verify: false

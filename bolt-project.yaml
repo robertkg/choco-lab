@@ -1,0 +1,6 @@
+---
+name: chocolab
+modules:
+- puppetlabs/powershell
+- puppetlabs/chocolatey
+- puppet/windowsfeature
