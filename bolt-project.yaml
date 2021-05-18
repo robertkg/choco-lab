@@ -4,3 +4,6 @@ modules:
 - puppetlabs/powershell
 - puppetlabs/chocolatey
 - puppet/windowsfeature
+- chocolatey/chocolatey_server
+- puppetlabs/iis
+- puppet/sslcertificate

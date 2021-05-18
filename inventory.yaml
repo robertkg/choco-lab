@@ -1,9 +1,9 @@
 groups:
   - name: containers
     targets:
-      - name: chocosrv
+      - name: simpleserver
         uri: 127.0.0.1:55986
-      - name: chococli
+      - name: client
         uri: 127.0.0.1:55987
     config:
       transport: winrm

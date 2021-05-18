@@ -1,13 +1,13 @@
 services:
-  chocosrv:
+  simpleserver:
     build: .
     ports:
       - '55986:5986'
     tty: true
-    container_name: chocosrv
-  chococli:
+    container_name: simpleserver
+  client:
     build: .
     ports:
       - '55987:5986'
     tty: true
-    container_name: chococli
+    container_name: client
