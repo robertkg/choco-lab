@@ -2,3 +2,4 @@
 .resource_types/
 bolt-debug.log
 .plan_cache.json
+.rerun.json
