@@ -14,7 +14,7 @@ docker compose up -d --build
 Verify connection
 
 ```
-bolt command run ping -t containers
+bolt command run whoami -t containers
 ```
 
 Apply catalog
@@ -26,7 +26,7 @@ bolt apply ./manifests/site.pp -t containers
 Remote into container
 
 ```
-docker exec -it <chococli/chocosrv> powershell
+docker exec -it <client/simpleserver> powershell
 ```
 
 ## Debugging
