@@ -1,11 +1,19 @@
 include chocolatey
 
+$_chocolatey_server_location = 'C:/Tools/chocolatey.server'
+$_chocolatey_server_app_pool_name = 'ChocolateyServer'
+
 chocolateyfeature {'autouninstaller':
   ensure => enabled,
 }
 
 chocolateyfeature {'usepackageexitcodes':
   ensure => disabled,
+}
+
+package { 'chocolatey.server':
+  ensure   => present,
+  provider => chocolatey,
 }
 
 iis_feature { 'Web-WebServer':
@@ -30,7 +38,7 @@ iis_application_pool { [
   '.NET v4.5 Classic',
   '.NET v4.5',]:
     ensure  => absent,
-    require => iis_site['Default Web Site'],
+    require => Iis_site['Default Web Site'],
 }
 
 # application in iis
@@ -54,10 +62,12 @@ iis_application_pool { 'ChocolateyServer':
       'protocol'             => 'https',
       'certificatehash'      => '3598FAE5ADDB8BA32A061C5579829B359409856F',
       'certificatestorename' => 'MY',
+      'sslflags'             => 0,
     }
   ],
   require         => Package['chocolatey.server'],
 }
+
 
 # lock down web directory
 -> acl { $_chocolatey_server_location:
