@@ -1,4 +1,4 @@
-# choco-lab
+# chocolab
 
 Lab environment for a server/client setup using Chocolatey Simple Server, Puppet Bolt and Docker.
 
@@ -7,7 +7,7 @@ Lab environment for a server/client setup using Chocolatey Simple Server, Puppet
 Build
 
 ```
-cd choco-lab
+cd chocolab
 docker compose up -d --build
 ```
 
