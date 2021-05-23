@@ -24,7 +24,7 @@ bolt module install
 ### Apply catalog
 Applies a manifest from the catalog on containers
 ```
-bolt apply ./manifests/site.pp -t containers
+bolt apply ./manifests/site.pp -t containers -l info
 ```
 
 ## Debugging
@@ -34,13 +34,14 @@ Bolt uses WinRM to apply configuration. You can debug WinRM connection issues wi
 
 ```powershell
 $splat = @{
-    Credential = New-Object System.Management.Automation.PSCredential -ArgumentList 'Bolt', (ConvertTo-SecureString 'Passw0rd' -AsPlainText)
-    ComputerName = 'localhost'
-    Port = 55986 # See docker-compose.yaml for port maps
+    Credential     = Get-Credential 'Bolt'
+    ComputerName   = 'localhost'
+    Port           = 55986 # See docker-compose.yaml for port maps
     Authentication = 'Basic'
-    UseSSL = $true
-    SessionOption = (New-PSSessionOption -SkipCACheck -SkipCNCheck) # Using self-signed cert for WinRM connection
+    UseSSL         = $true
+    SessionOption  = New-PSSessionOption -SkipCACheck -SkipCNCheck # Using self-signed cert for WinRM connection
 }
+
 Enter-PSSession @splat
 ```
 
@@ -48,6 +49,6 @@ Enter-PSSession @splat
 Start an interactive session through docker on the container:
 
 ```
-docker exec -it <client/simpleserver> powershell
+docker exec -it <client/chocoserver> powershell
 ```
 
