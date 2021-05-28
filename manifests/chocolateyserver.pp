@@ -1,15 +1,26 @@
+# Installs chocolatey on the system
 include chocolatey
 
-$_chocolatey_server_location = 'C:/Tools/chocolatey.server'
+file { 'C:/Puppet.txt':
+  ensure  => present,
+  content => 'Managed by Puppet',
+  owner   => system,
+}
+
+# host { 'chocolatey.local':
+#   ensure  => present,
+#   ip      => '127.0.0.1',
+#   comment => 'Internal Chocolatey repo',
+# }
+
+# Workaround for host resource
+file { 'C:/windows/system32/drivers/etc/hosts':
+  ensure  => present,
+  content => '127.0.0.1 chocolab.local # Internal chocolatey repo'
+}
+
+$_chocolatey_server_location = 'C:\\Tools\\chocolatey.server'
 $_chocolatey_server_app_pool_name = 'ChocolateyServer'
-
-chocolateyfeature {'autouninstaller':
-  ensure => enabled,
-}
-
-chocolateyfeature {'usepackageexitcodes':
-  ensure => disabled,
-}
 
 package { 'chocolatey.server':
   ensure   => present,
@@ -58,11 +69,8 @@ iis_application_pool { 'ChocolateyServer':
   preloadenabled  => true,
   bindings        =>  [
     {
-      'bindinginformation'   => '*:443:chocolab.local',
-      'protocol'             => 'https',
-      'certificatehash'      => '3598FAE5ADDB8BA32A061C5579829B359409856F',
-      'certificatestorename' => 'MY',
-      'sslflags'             => 0,
+      'bindinginformation' => '*:80:chocolab.local',
+      'protocol'           => 'http',
     }
   ],
   require         => Package['chocolatey.server'],
@@ -89,9 +97,15 @@ iis_application_pool { 'ChocolateyServer':
   require     => Package['chocolatey.server'],
 }
 
-
-file { 'C:/Puppet.txt':
-  ensure  => present,
-  content => 'Managed by Puppet',
-  owner   => system,
+chocolateysource {'chocolatey':
+  ensure => disabled,
 }
+
+chocolateysource {'chocolab.local':
+  ensure   => present,
+  location => 'http://chocolab.local/chocolatey',
+  require  => File['C:/windows/system32/drivers/etc/hosts']
+}
+
+
+# Internalize and push packages
