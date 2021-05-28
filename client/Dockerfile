@@ -11,3 +11,8 @@ RUN $cert = New-SelfSignedCertificate -DnsName "winrm" -CertStoreLocation Cert:\
 RUN net user /add Bolt Passw0rd /fullname:'Puppet Bolt' ; \
     net localgroup Administrators Bolt /add
 
+# https://chocolatey.org/install
+# Chocolatey prompts on the first plan, doing first time install in dockerfile instead
+RUN Set-ExecutionPolicy Bypass -Scope Process -Force; \
+    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; \
+    iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'));

@@ -7,3 +7,4 @@ modules:
 - chocolatey/chocolatey_server
 - puppetlabs/iis
 - puppet/sslcertificate
+- puppetlabs/reboot

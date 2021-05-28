@@ -25,5 +25,5 @@ steps:
           path: C:/Puppet
           content: >
             Hello from Puppet
-            This is deployed from bolt plan chocolab::simpleserver
+            This is deployed from bolt plan chocolab::chocoserver
           owner: system

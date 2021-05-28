@@ -1,7 +1,7 @@
 groups:
   - name: containers
     targets:
-      - name: simpleserver
+      - name: chocoserver
         uri: 127.0.0.1:55986
       - name: client
         uri: 127.0.0.1:55987

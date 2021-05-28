@@ -27,6 +27,15 @@ Applies a manifest from the catalog on containers
 bolt apply ./manifests/site.pp -t containers -l info
 ```
 
+### Push some packages
+
+Some example packages for testing purposes.
+Packages with external installer need to be recompiled manually atm.
+
+```
+.\files\Push-ChocolateyPackage.ps1
+```
+
 ## Debugging
 
 ### Testing WinRM connection:
