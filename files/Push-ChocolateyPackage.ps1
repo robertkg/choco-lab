@@ -44,7 +44,7 @@ docker exec chocoserver powershell -c 'ls c:\tools\chocolatey.server\App_Data\Pa
 
 $ProgressPreference = 'SilentlyContinue'
 
-New-Item -ItemType Directory -Force -Path 'C:\Temp' -ErrorAction Stop
+New-Item -ItemType Directory -Force -Path 'C:\Temp' -ErrorAction Stop 1>$null
 Push-Location 'C:\Temp'
 $wc = New-Object System.Net.WebClient
 
