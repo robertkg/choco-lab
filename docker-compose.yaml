@@ -9,7 +9,7 @@ services:
     build: chocolateyserver
     ports:
       - '55986:5986'
-      - '139:13900'
+      - '13900:139'
       - '8080:80'
     hostname: chocoserver
     networks:
