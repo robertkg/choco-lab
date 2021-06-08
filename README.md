@@ -4,36 +4,9 @@ Lab environment for a server/client setup using Chocolatey Simple Server, Puppet
 ## Setup
 
 ### Build
-Creates containers from docker-compose.yaml.
-```
-docker-compose up -d --build
-```
 
-### Verify connection
-Runs a test connection on the containers to verify WinRM connection is working.
-```
-bolt command run whoami -t containers
-```
-
-### Sync modules
-Syncs modules from Puppetfile.
-```
-bolt module install
-```
-
-### Apply catalog
-Applies a manifest from the catalog on containers
-```
-bolt apply ./manifests/site.pp -t containers -l info
-```
-
-### Push some packages
-
-Some example packages for testing purposes.
-Packages with external installer need to be recompiled manually atm.
-
-```
-.\files\Push-ChocolateyPackage.ps1
+```powershell
+build.ps1
 ```
 
 ## Debugging
