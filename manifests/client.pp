@@ -28,13 +28,18 @@ chocolateysource {'chocolab.local':
   require  => File['C:/windows/system32/drivers/etc/hosts']
 }
 
+exec { 'refresh-env':
+  command     => 'C:/ProgramData/chocolatey/bin/RefreshEnv.cmd',
+  refreshonly => true,
+  provider    => windows,
+}
+
 # Set default package provider
 Package { provider => 'chocolatey' }
 
-# Install packages
+# Chocolatey packages
 package { 'git':
   ensure          => latest,
-  provider        => chocolatey,
   install_options => [
     '-params',
     '"',
@@ -44,7 +49,9 @@ package { 'git':
     '/NoCredentialManager',
     '/NoGitLfs', '/SChannel',
     '"'
-  ]
+  ],
+  notify          => Exec['refresh-env'],
+  require         => Chocolateysource['chocolab.local'],
 }
 
 package { 'nodejs-lts':
@@ -53,4 +60,35 @@ package { 'nodejs-lts':
 
 package { 'notepadplusplus':
   ensure => latest,
+}
+
+package { 'vscode':
+  ensure          => 'present',
+  install_options => [
+    '-params',
+    '"',
+    '/NoContextMenuFiles',
+    '/NoContextMenuFolders',
+    '/NoQuicklaunchIcon',
+    '/NoDesktopIcon',
+    '"',
+  ],
+}
+
+file { 'C:/Git':
+  ensure => directory,
+  owner  => system,
+}
+-> file { 'C:/Git/README.txt':
+  ensure  => present,
+  content => 'Git repos here',
+  owner   => system,
+}
+
+vcsrepo { 'chocolab':
+  ensure   => present,
+  path     => 'C:/Git/chocolab',
+  source   => 'https://github.com/robertkg/chocolab.git',
+  provider => git,
+  require  => File['C:/Git'],
 }

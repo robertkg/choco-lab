@@ -13,14 +13,17 @@ file { 'C:/Puppet.txt':
 #   comment => 'Internal Chocolatey repo',
 # }
 
+$_chocolatey_server_dns_name = 'chocolab.local'
+$_chocolatey_server_location = 'C:\\Tools\\chocolatey.server'
+$_chocolatey_server_app_pool_name = $_chocolatey_server_dns_name
+
 # Workaround for host resource
 file { 'C:/windows/system32/drivers/etc/hosts':
   ensure  => present,
-  content => '127.0.0.1 chocolab.local # Internal chocolatey repo'
+  content => "127.0.0.1 ${_chocolatey_server_dns_name} # Internal chocolatey repo"
 }
 
-$_chocolatey_server_location = 'C:\\Tools\\chocolatey.server'
-$_chocolatey_server_app_pool_name = 'ChocolateyServer'
+
 
 package { 'chocolatey.server':
   ensure   => present,
@@ -53,7 +56,7 @@ iis_application_pool { [
 }
 
 # application in iis
-iis_application_pool { 'ChocolateyServer':
+iis_application_pool { $_chocolatey_server_app_pool_name:
   ensure                    => 'present',
   state                     => 'started',
   enable32_bit_app_on_win64 => true,
@@ -62,14 +65,14 @@ iis_application_pool { 'ChocolateyServer':
   idle_timeout              => '00:00:00',
   restart_time_limit        => '00:00:00',
 }
--> iis_site {'chocolab.local':
+-> iis_site { $_chocolatey_server_dns_name:
   ensure          => 'started',
   physicalpath    => $_chocolatey_server_location,
   applicationpool => $_chocolatey_server_app_pool_name,
   preloadenabled  => true,
   bindings        =>  [
     {
-      'bindinginformation' => '*:80:chocolab.local',
+      'bindinginformation' => "*:80:${_chocolatey_server_dns_name}",
       'protocol'           => 'http',
     }
   ],
@@ -101,9 +104,9 @@ chocolateysource {'chocolatey':
   ensure => disabled,
 }
 
-chocolateysource {'chocolab.local':
+chocolateysource { $_chocolatey_server_dns_name:
   ensure   => present,
-  location => 'http://chocolab.local/chocolatey',
+  location => "http://${_chocolatey_server_dns_name}/chocolatey",
   require  => File['C:/windows/system32/drivers/etc/hosts']
 }
 
