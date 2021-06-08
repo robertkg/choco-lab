@@ -8,3 +8,4 @@ modules:
 - puppetlabs/iis
 - puppet/sslcertificate
 - puppetlabs/reboot
+- puppetlabs/vcsrepo
