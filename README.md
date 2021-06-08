@@ -13,7 +13,7 @@ choco install docker-desktop puppet-bolt
 ### Build
 
 ```powershell
-build.ps1
+.\build.ps1
 ```
 
 ## Debugging
