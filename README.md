@@ -3,6 +3,13 @@ Lab environment for a server/client setup using Chocolatey Simple Server, Puppet
 
 ## Setup
 
+Puppet Bolt and Docker Desktop must be installed on your machine. 
+You must also enable windows containers in Docker Desktop.
+
+```
+choco install docker-desktop puppet-bolt
+```
+
 ### Build
 
 ```powershell
