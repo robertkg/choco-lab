@@ -19,10 +19,14 @@ Specifies the API key to use for the given Chocolatey source.
 Specifies the Chocolatey source to push the package to.
 
 .EXAMPLE
-An example
+Push-ChocolateyPackage -Path C:\Temp\mypackage.1.2.3.nupkg -ApiKey myapikey -Source http://chocolab.local:8080
 
-.NOTES
-General notes
+This command pushes the version 1.2.3 of package 'mypackage' to the Chocolatey source http://chocolab.local:8080. 
+
+.EXAMPLE
+Push-ChocolateyPackage C:\Packages -ApiKey myapikey
+
+This command pushes all .nupkg packages from the C:\Packages directory.
 #>
 function Push-ChocolateyPackage {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]

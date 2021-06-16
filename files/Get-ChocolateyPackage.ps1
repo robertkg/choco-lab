@@ -19,6 +19,8 @@ Specifies the version of the Chocolatey package to download.
 .EXAMPLE
 Get-ChocolateyPackage -Name git -Version 2.32.0
 
+This command downloads version 2.32.0 of git from the Chocolatey Community Repository.
+
 .NOTES
 General notes
 #>
