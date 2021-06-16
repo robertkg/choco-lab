@@ -50,12 +50,23 @@ function Push-ChocolateyPackage {
 
     if ($PSCmdlet.ShouldProcess($Source, "Push packages $($nupkgs.Name -join ', ')")) {
         foreach ($nupkg in $nupkgs) {
-
             try {
-                choco push $nupkg.FullName -s $source -k $ApiKey --force # Force required when repo uses http instead of https                    
+                $push = choco push $nupkg.FullName -r -s $source -k $ApiKey --force # Force required when using http repo
+                
+                if ($LASTEXITCODE -ne 0) {
+                    throw $push
+                }
+
+                Write-Output $push
             }
             catch {
-                Write-Error "Error pushing package '$Path': $($_.Exception.Message)"
+                if ($_.Exception.Message -match 'package version already exists on the repository\.$') {
+                    Write-Warning "$($nupkg.Name) already exists on the repository"
+                    continue
+                }
+                else {
+                    Write-Error "Error pushing $($nupkg.Name): $($_.Exception.Message)"
+                }
             }
         }
     }
