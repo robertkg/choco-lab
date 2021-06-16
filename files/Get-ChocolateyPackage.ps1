@@ -68,12 +68,12 @@ function Get-ChocolateyPackage {
         $fileName = $responseHeader -split '/' | Select-Object -Last 1
     }
 
+    $downloadDir = 'C:\Temp'
+    $outFile = "$downloadDir\$fileName"
+
     if ($outFile -notmatch '^\S+\.nupkg$') {
         throw "Could not determine file name from response header $($response.ResponseUri)"
     }
-    
-    $downloadDir = 'C:\Temp'
-    $outFile = "$downloadDir\$fileName"
 
     if (-not (Test-Path $downloadDir)) {
         New-Item -ItemType Directory -Path $downloadDir -ErrorAction Stop 1>$null   
