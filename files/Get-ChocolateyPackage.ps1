@@ -1,4 +1,3 @@
-
 <#
 .SYNOPSIS
 Downloads NuGet packages from the Chocolatey Community Repository.
@@ -179,12 +178,3 @@ function Get-ChocolateyPackage {
 
 
 }
-
-# Get-ChocolateyPackage -Name 'git' -ResolveDependency
-# Get-ChocolateyPackage -Name 'nodejs-lts' -ResolveDependency
-# Get-ChocolateyPackage -Name 'winscp' -ResolveDependency
-# Get-ChocolateyPackage -Name 'notepadplusplus' -ResolveDependency
-# Get-ChocolateyPackage -Name 'gpg4win' -ResolveDependency
-# Get-ChocolateyPackage -Name 'puppet-bolt' -ResolveDependency
-# Get-ChocolateyPackage -Name 'vscode' -ResolveDependency
-# Get-ChocolateyPackage -Name 'sql-server-management-studio' -ResolveDependency
