@@ -15,7 +15,7 @@ $packages = @(
     'git'
     'git.install'
     'nodejs-lts'
-    'nodepadplusplus'
+    'notepadplusplus'
     'notepadplusplus.install'
     'DotNet4.5.2'
     'vscode'
