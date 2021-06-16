@@ -1,5 +1,5 @@
 networks:
-  mynetwork:
+  chocolab:
     ipam:
       config:
         - subnet: 172.20.0.0/24
@@ -13,7 +13,7 @@ services:
       - '8080:80'
     hostname: chocoserver
     networks:
-      mynetwork:
+      chocolab:
         ipv4_address: 172.20.0.10
     environment: 
       - DOCKER=true
@@ -23,10 +23,11 @@ services:
     build: client
     ports:
       - '55987:5986'
-    container_name: client
+    hostname: client
     networks:
-      mynetwork:
+      chocolab:
         ipv4_address: 172.20.0.11
     environment: 
       - DOCKER=true
     tty: true
+    container_name: client
