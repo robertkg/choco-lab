@@ -1,3 +1,5 @@
+#Requires -PSEdition Core
+
 <#
 .SYNOPSIS
 Downloads NuGet packages from the Chocolatey Community Repository.
@@ -99,7 +101,8 @@ function Get-ChocolateyPackage {
     #region Check nuspec file for dependencies
     try {
         $archiveDir = $outFile -split '\.nupkg$' | Select-Object -First 1
-        Expand-Archive -Path $outFile -DestinationPath $archiveDir        
+        if (-not (Test-Path $archiveDir)) { New-Item -ItemType Directory -Path $archiveDir 1>$null } 
+        Expand-Archive $outFile $archiveDir 1>$null   
         
         [xml] $nuspec = Get-Content "$archiveDir\*.nuspec"
         $dependencies = $nuspec.package.metadata.dependencies.dependency
