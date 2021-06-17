@@ -7,8 +7,8 @@ Write-Output '----------- CHOCOSERVER MANIFEST -----------'
 bolt apply .\manifests\chocolateyserver.pp -t chocoserver
 
 Write-Output '----------- PUSH PACKAGES -----------'
-. .\files\Get-ChocolateyPackage.ps1
-. .\files\Push-ChocolateyPackage.ps1
+. $PSScriptRoot\src\Get-ChocolateyPackage.ps1
+. $PSScriptRoot\src\Push-ChocolateyPackage.ps1
 
 $packages = @(
     'chocolatey-core.extension'
