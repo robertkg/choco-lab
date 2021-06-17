@@ -3,3 +3,4 @@
 bolt-debug.log
 .plan_cache.json
 .rerun.json
+.task_cache.json
