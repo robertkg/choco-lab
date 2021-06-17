@@ -18,8 +18,13 @@ file { 'C:/windows/system32/drivers/etc/hosts':
   content => '172.20.0.10 chocolab.local # Internal chocolatey repo'
 }
 
+file { 'C:/Windows/System32/WindowsPowerShell/v1.0/profile.ps1':
+  ensure  => present,
+  content => file('chocolab/profile.ps1'),
+}
+
 chocolateysource {'chocolatey':
-  ensure => disabled,
+  ensure => absent,
 }
 
 chocolateysource {'chocolab.local':

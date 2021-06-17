@@ -23,7 +23,10 @@ file { 'C:/windows/system32/drivers/etc/hosts':
   content => "127.0.0.1 ${_chocolatey_server_dns_name} # Internal chocolatey repo"
 }
 
-
+file { 'C:/Windows/System32/WindowsPowerShell/v1.0/profile.ps1':
+  ensure  => present,
+  content => file('chocolab/profile.ps1'),
+}
 
 package { 'chocolatey.server':
   ensure   => present,
@@ -101,7 +104,7 @@ iis_application_pool { $_chocolatey_server_app_pool_name:
 }
 
 chocolateysource {'chocolatey':
-  ensure => disabled,
+  ensure => absent,
 }
 
 chocolateysource { $_chocolatey_server_dns_name:
