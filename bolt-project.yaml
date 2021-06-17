@@ -9,3 +9,5 @@ modules:
 - puppet/sslcertificate
 - puppetlabs/reboot
 - puppetlabs/vcsrepo
+- puppet/windows_env
+- puppetlabs/dsc_lite
