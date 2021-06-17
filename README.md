@@ -10,6 +10,12 @@ You must also enable windows containers in Docker Desktop.
 choco install docker-desktop puppet-bolt
 ```
 
+Install Bolt project modules:
+
+```
+bolt module install
+```
+
 ### Build
 
 The build script will compose the client and server docker containers, apply the Puppet manifests and push a set of test packages to the internal Chocolatey repository.
