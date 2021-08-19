@@ -83,20 +83,22 @@ function Get-ChocolateyPackage {
 
     Write-Progress -Activity $Name
     
-    $wc = New-Object System.Net.WebClient
-    $wc.DownloadFile($responseHeader, $outFile)
 
-    $result = [PSCustomObject] @{
-        Package     = $Name
-        Source      = $responseHeader
-        Destination = $outFile
-        Dependency  = $false 
-        RequiredBy  = $null
+    if (-not (Test-Path $outFile)) {
+        $wc = New-Object System.Net.WebClient
+        $wc.DownloadFile($responseHeader, $outFile)
     }
 
     Write-Progress -Activity $Name
 
-    Write-Output $result
+    # $result = [PSCustomObject] @{
+    #     Package     = $Name
+    #     Source      = $responseHeader
+    #     Destination = $outFile
+    # }
+    #Write-Output $result
+
+    Write-Host "$Package - $outFile"
 
     #region Check nuspec file for dependencies
     try {
@@ -178,6 +180,5 @@ function Get-ChocolateyPackage {
         Remove-Item -Path $archiveDir -Recurse -Confirm:$false
     }
     #endregion Check nuspec file for dependencies
-
 
 }
