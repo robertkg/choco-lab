@@ -13,6 +13,8 @@ RUN net user /add Bolt Passw0rd /fullname:'Puppet Bolt' ; \
 
 # https://chocolatey.org/install
 # Chocolatey prompts on the first plan, doing first time install in dockerfile instead
-RUN Set-ExecutionPolicy Bypass -Scope Process -Force; \
+RUN Set-DnsClientServerAddress -InterfaceIndex 4 -ServerAddresses 8.8.8.8, 8.8.4.4; \
+    Set-ExecutionPolicy Bypass -Scope Process -Force; \
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; \
     iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'));
+
