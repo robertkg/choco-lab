@@ -37,10 +37,6 @@ function Get-ChocolateyPackage {
         [ValidatePattern('^[0-9\.]+$')]
         [string]
         $Version
-
-        # [Parameter()]
-        # [switch]
-        # $ResolveDependency
     )
 
     # Fetch file name from redir
@@ -82,7 +78,6 @@ function Get-ChocolateyPackage {
     }
 
     Write-Progress -Activity $Name
-    
 
     if (-not (Test-Path $outFile)) {
         $wc = New-Object System.Net.WebClient
