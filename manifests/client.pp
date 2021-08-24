@@ -1,46 +1,5 @@
-include chocolatey
-
-file { 'C:/Puppet.txt':
-  ensure  => present,
-  content => 'Managed by Puppet',
-  owner   => system,
-}
-
-# host { 'chocolatey.local':
-#   ensure  => present,
-#   ip      => '127.0.0.1',
-#   comment => 'Internal Chocolatey repo',
-# }
-
-# Workaround for host resource
-file { 'C:/windows/system32/drivers/etc/hosts':
-  ensure  => present,
-  content => '172.20.0.10 chocolab.local # Internal chocolatey repo'
-}
-
-file { 'C:/Windows/System32/WindowsPowerShell/v1.0/profile.ps1':
-  ensure  => present,
-  content => file('chocolab/profile.ps1'),
-}
-
-chocolateysource {'chocolatey':
-  ensure => absent,
-}
-
-chocolateysource {'chocolab.local':
-  ensure   => present,
-  location => 'http://chocolab.local/chocolatey',
-  require  => File['C:/windows/system32/drivers/etc/hosts']
-}
-
-exec { 'refresh-env':
-  command     => 'C:/ProgramData/chocolatey/bin/RefreshEnv.cmd',
-  refreshonly => true,
-  provider    => windows,
-}
-
-# Set default package provider
-Package { provider => 'chocolatey' }
+include chocolab::base
+include chocolab::choco
 
 # Chocolatey packages
 package { 'git':
@@ -57,6 +16,12 @@ package { 'git':
   ],
   notify          => Exec['refresh-env'],
   require         => Chocolateysource['chocolab.local'],
+}
+
+exec { 'refresh-env':
+  command     => 'C:/ProgramData/chocolatey/bin/RefreshEnv.cmd',
+  refreshonly => true,
+  provider    => windows,
 }
 
 package { 'nodejs-lts':
