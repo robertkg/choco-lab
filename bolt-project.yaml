@@ -11,3 +11,4 @@ modules:
 - puppetlabs/vcsrepo
 - puppet/windows_env
 - puppetlabs/dsc_lite
+- puppetlabs/host_core
