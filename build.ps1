@@ -4,7 +4,7 @@ Write-Output '----------- DOCKER COMPOSE -----------'
 docker-compose up -d --build --force-recreate
 
 Write-Output '----------- CHOCOSERVER MANIFEST -----------'
-bolt apply .\manifests\chocolateyserver.pp -t chocoserver
+bolt apply --log-level debug .\manifests\chocoserver.pp -t chocoserver
 
 Write-Output '----------- PUSH PACKAGES -----------'
 . $PSScriptRoot\src\Get-ChocolateyPackage.ps1
@@ -32,4 +32,4 @@ $packages | ForEach-Object {
 Push-ChocolateyPackage 'C:\Temp\*.nupkg' -Confirm:$false
 
 Write-Output '----------- CLIENT MANIFEST -----------'
-bolt apply .\manifests\client.pp -t client
+bolt apply --log-level debug  .\manifests\client.pp -t client
