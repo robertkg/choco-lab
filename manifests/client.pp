@@ -2,6 +2,8 @@ include chocolab::base
 include chocolab::choco
 
 # Chocolatey packages
+Package { provider => 'chocolatey' }
+
 package { 'git':
   ensure          => latest,
   install_options => [
@@ -28,22 +30,22 @@ package { 'nodejs-lts':
   ensure   => latest,
 }
 
-package { 'notepadplusplus':
-  ensure => latest,
-}
+# package { 'notepadplusplus':
+#   ensure => latest,
+# }
 
-package { 'vscode':
-  ensure          => 'present',
-  install_options => [
-    '-params',
-    '"',
-    '/NoContextMenuFiles',
-    '/NoContextMenuFolders',
-    '/NoQuicklaunchIcon',
-    '/NoDesktopIcon',
-    '"',
-  ],
-}
+# package { 'vscode':
+#   ensure          => 'present',
+#   install_options => [
+#     '-params',
+#     '"',
+#     '/NoContextMenuFiles',
+#     '/NoContextMenuFolders',
+#     '/NoQuicklaunchIcon',
+#     '/NoDesktopIcon',
+#     '"',
+#   ],
+# }
 
 file { 'C:/Git':
   ensure => directory,
@@ -53,12 +55,4 @@ file { 'C:/Git':
   ensure  => present,
   content => 'Git repos here',
   owner   => system,
-}
-
-vcsrepo { 'chocolab':
-  ensure   => present,
-  path     => 'C:/Git/chocolab',
-  source   => 'https://github.com/robertkg/chocolab.git',
-  provider => git,
-  require  => File['C:/Git'],
 }
