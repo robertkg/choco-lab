@@ -4,6 +4,7 @@
 # The following directive installs modules to the managed moduledir.
 moduledir '.modules'
 
+mod 'puppetlabs/host_core', '1.0.3'
 mod 'puppetlabs/dsc_lite', '3.1.0'
 mod 'puppetlabs/vcsrepo', '5.0.0'
 mod 'puppetlabs/registry', '4.0.0'
