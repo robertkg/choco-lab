@@ -6,7 +6,7 @@ networks:
         - subnet: 172.20.0.0/24
 services:
   chocoserver:
-    build: chocolateyserver
+    build: coreserver
     container_name: chocoserver
     dns:
       - 8.8.8.8
@@ -23,7 +23,7 @@ services:
       - '8080:80'
     tty: true
   client:
-    build: client
+    build: coreserver
     container_name: client
     dns:
       - 8.8.8.8
