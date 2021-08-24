@@ -1,31 +1,32 @@
+---
 networks:
   chocolab:
     ipam:
       config:
         - subnet: 172.20.0.0/24
-
 services:
   chocoserver:
     build: chocolateyserver
-    ports:
-      - '55986:5986'
-      - '13900:139'
-      - '8080:80'
+    container_name: chocoserver
+    environment:
+      - DOCKER=true
     hostname: chocoserver
     networks:
       chocolab:
         ipv4_address: 172.20.0.10
       dns:
-       - 8.8.8.8
-       - 8.8.4.4
-    environment: 
-      - DOCKER=true
+        - 8.8.8.8
+        - 8.8.4.4
+    ports:
+      - '55986:5986'
+      - '13900:139'
+      - '8080:80'
     tty: true
-    container_name: chocoserver
   client:
     build: client
-    ports:
-      - '55987:5986'
+    container_name: client
+    environment:
+      - DOCKER=true
     hostname: client
     networks:
       chocolab:
@@ -33,7 +34,6 @@ services:
       dns:
         - 8.8.8.8
         - 8.8.4.4
-    environment: 
-      - DOCKER=true
+    ports:
+      - '55987:5986'
     tty: true
-    container_name: client
