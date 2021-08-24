@@ -2,11 +2,11 @@ $ErrorActionPreference = 'Stop'
 
 Write-Output '----------- DOCKER COMPOSE -----------'
 docker-compose up -d --build --force-recreate
-if (!$?) { throw 'docker-compose failed' }
+if (!$?) { Write-Error 'docker-compose failed' }
 
 Write-Output '----------- CHOCOSERVER MANIFEST -----------'
 bolt apply --log-level debug .\manifests\chocoserver.pp -t chocoserver
-if (!$?) { throw 'bolt apply failed' }
+if (!$?) { Write-Error 'bolt apply failed' }
 
 Write-Output '----------- PUSH PACKAGES -----------'
 . $PSScriptRoot\src\Get-ChocolateyPackage.ps1
@@ -35,4 +35,4 @@ Push-ChocolateyPackage 'C:\Temp\*.nupkg' -Confirm:$false
 
 Write-Output '----------- CLIENT MANIFEST -----------'
 bolt apply --log-level debug .\manifests\client.pp -t client
-if (!$?) { throw 'bolt apply failed' }
+if (!$?) { Write-Error 'bolt apply failed' }
