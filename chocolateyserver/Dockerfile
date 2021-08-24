@@ -8,7 +8,7 @@ RUN $cert = New-SelfSignedCertificate -DnsName "winrm" -CertStoreLocation Cert:\
     winrm set winrm/config/service/Auth '@{Basic=\"true\"}'
 
 # Create Bolt account
-RUN net user /add Bolt Passw0rd /fullname:'Puppet Bolt' ; \
+RUN net user /add Bolt Passw0rd! /fullname:'Puppet Bolt' ; \
     net localgroup Administrators Bolt /add
 
 # https://chocolatey.org/install
