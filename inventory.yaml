@@ -9,7 +9,7 @@ groups:
       transport: winrm
       winrm:
         user: Bolt
-        password: Passw0rdz
+        password: Passw0rd
         basic-auth-only: true
         ssl: true
         ssl-verify: false
