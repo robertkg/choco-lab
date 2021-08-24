@@ -25,3 +25,7 @@ Get-Motd
 function prompt {
     "[DOCKER] $($executionContext.SessionState.Path.CurrentLocation.Path)> "
 }
+
+function Get-HostFile {
+    Get-Content C:\Windows\System32\drivers\etc\hosts
+}
