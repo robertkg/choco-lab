@@ -78,22 +78,13 @@ function Get-ChocolateyPackage {
     }
 
     Write-Progress -Activity $Name
-
+    
     if (-not (Test-Path $outFile)) {
         $wc = New-Object System.Net.WebClient
-        $wc.DownloadFile($responseHeader, $outFile)
+        $wc.DownloadFile($responseHeader, $outFile)    
     }
 
-    Write-Progress -Activity $Name
-
-    # $result = [PSCustomObject] @{
-    #     Package     = $Name
-    #     Source      = $responseHeader
-    #     Destination = $outFile
-    # }
-    #Write-Output $result
-
-    Write-Host "$Package - $outFile"
+    Write-Host "$Name - $outFile"
 
     #region Check nuspec file for dependencies
     try {
@@ -105,7 +96,7 @@ function Get-ChocolateyPackage {
         $dependencies = $nuspec.package.metadata.dependencies.dependency
 
         if ($dependencies.Count -gt 0) {
-            Write-Warning "Package $Name has dependencies: $($dependencies.id -join ', ')"
+            Write-Warning "$Name has dependencies: $($dependencies.id -join ', ')"
 
             # This will cause problems with dependencies having dependencies
             # All packages should be explicitly requested

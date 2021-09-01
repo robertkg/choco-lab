@@ -6,7 +6,7 @@ networks:
         - subnet: 172.20.0.0/24
 services:
   chocoserver:
-    build: chocolateyserver
+    build: coreserver
     container_name: chocoserver
     dns:
       - 8.8.8.8
@@ -18,12 +18,21 @@ services:
       chocolab:
         ipv4_address: 172.20.0.10
     ports:
+<<<<<<< HEAD
       - "55986:5986"
       - "13900:139"
       - "8080:80"
     tty: true
   client:
     build: client
+=======
+      - '55986:5986'
+      - '13900:139'
+      - '8080:80'
+    tty: true
+  client:
+    build: coreserver
+>>>>>>> acbbbc325e67409514a97a1f0f77acccfd12846b
     container_name: client
     dns:
       - 8.8.8.8
@@ -35,5 +44,10 @@ services:
       chocolab:
         ipv4_address: 172.20.0.11
     ports:
+<<<<<<< HEAD
       - "55987:5986"
     tty: true
+=======
+      - '55987:5986'
+    tty: true
+>>>>>>> acbbbc325e67409514a97a1f0f77acccfd12846b

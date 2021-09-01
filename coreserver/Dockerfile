@@ -1,3 +1,4 @@
+# Dockerfile for Puppet Bolt managed Core 2019 server
 ARG TAG=ltsc2019
 FROM mcr.microsoft.com/windows/servercore:$TAG
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
@@ -8,11 +9,12 @@ RUN $cert = New-SelfSignedCertificate -DnsName "winrm" -CertStoreLocation Cert:\
     winrm set winrm/config/service/Auth '@{Basic=\"true\"}'
 
 # Create Bolt account
-RUN net user /add Bolt Passw0rd /fullname:'Puppet Bolt' ; \
+RUN net user /add Bolt Passw0rd! /fullname:'Puppet Bolt' ; \
     net localgroup Administrators Bolt /add
 
 # https://chocolatey.org/install
 # Chocolatey prompts on the first plan, doing first time install in dockerfile instead
+# Network mode inherit host DNS server. Set DNS servers explicit during install
 RUN Set-DnsClientServerAddress -InterfaceIndex 4 -ServerAddresses 8.8.8.8, 8.8.4.4; \
     Set-ExecutionPolicy Bypass -Scope Process -Force; \
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; \
