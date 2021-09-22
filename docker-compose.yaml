@@ -5,21 +5,37 @@ networks:
       config:
         - subnet: 172.20.0.0/24
 services:
-  chocoserver:
-    build: coreserver
-    container_name: chocoserver
+  # chocoserver:
+  #   build: coreserver
+  #   container_name: chocoserver
+  #   dns:
+  #     - 8.8.8.8
+  #     - 8.8.4.4
+  #   environment:
+  #     - DOCKER=true
+  #   hostname: chocoserver
+  #   networks:
+  #     chocolab:
+  #       ipv4_address: 172.20.0.10
+  #   ports:
+  #     - '55986:5986'
+  #     - '13900:139'
+  #     - '8080:80'
+  #   tty: true
+  nexus:
+    build: nexus
+    container_name: nexus
     dns:
       - 8.8.8.8
       - 8.8.4.4
     environment:
       - DOCKER=true
-    hostname: chocoserver
+    hostname: nexus
     networks:
       chocolab:
         ipv4_address: 172.20.0.10
     ports:
       - '55986:5986'
-      - '13900:139'
       - '8080:80'
     tty: true
   client:
