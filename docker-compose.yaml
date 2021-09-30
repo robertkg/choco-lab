@@ -37,6 +37,7 @@ services:
     ports:
       - '55986:5986'
       - '8080:80'
+      - '4433:443'
     tty: true
   client:
     build: coreserver
