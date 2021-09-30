@@ -12,8 +12,8 @@ RUN Set-DnsClientServerAddress -InterfaceIndex 4 -ServerAddresses 8.8.8.8, 8.8.4
     iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'));
 
 # Install Nexus 3 OSS
-RUN mkdir C:\Nexus; \
-    mkdir C:\Temp; \
+RUN mkdir C:\Nexus 1>$null; \
+    mkdir C:\Temp 1>$null; \
     $ProgressPreference = 'SilentlyContinue'; \
     Invoke-WebRequest -Uri https://download.sonatype.com/nexus/3/latest-win64.zip -OutFile C:\Temp\nexus.zip; \
     Expand-Archive C:\Temp\nexus.zip C:\Nexus; \
@@ -21,7 +21,7 @@ RUN mkdir C:\Nexus; \
 
 ADD nexus.properties C:/Nexus/sonatype-work/nexus3/etc/nexus.properties
 
-RUN & C:\Nexus\nexus-3.34.0-01\bin\nexus.exe /install nexus; \
+RUN & C:\Nexus\nexus-*\bin\nexus.exe /install nexus; \
     Set-Service nexus -StartupType Automatic; \
     Start-Service nexus;
 
