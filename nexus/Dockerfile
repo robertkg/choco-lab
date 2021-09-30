@@ -21,5 +21,29 @@ RUN mkdir C:\Nexus; \
 
 ADD nexus.properties C:/Nexus/sonatype-work/nexus3/etc/nexus.properties
 
-RUN & C:\Nexus\nexus-3.34.0-01\bin\nexus.exe /install Nexus; \
-    Start-Service Nexus
+RUN & C:\Nexus\nexus-3.34.0-01\bin\nexus.exe /install nexus; \
+    Set-Service nexus -StartupType Automatic; \
+    Start-Service nexus;
+
+# Install IIS
+RUN Install-WindowsFeature Web-Server, Web-Scripting-Tools, Web-Mgmt-Tools 1>$null;
+
+# Setup site
+RUN mkdir C:\inetpub\chocolab.local 1>$null; \
+    $cert = New-SelfSignedCertificate -Subject 'CN=chocolab.local'; \
+    New-IISSite -Name chocolab.local -PhysicalPath "$env:systemdrive\inetpub\chocolab.local" -BindingInformation "*:443:" -CertificateThumbPrint $cert.Thumbprint -CertStoreLocation "Cert:\LocalMachine\My" -Protocol https 1>$null;
+
+# Configure IIS reverse proxy
+RUN choco install urlrewrite, iis-arr -y; \
+    Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/proxy" -name "enabled" -value "True"; \
+    Add-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST" -filter "system.webServer/rewrite/allowedServerVariables" -name "." -value @{name='HTTP_X_FORWARDED_HOST'}; \
+    Add-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST" -filter "system.webServer/rewrite/allowedServerVariables" -name "." -value @{name='HTTP_X_FORWARDED_PROTO'};
+ADD web.config C:/inetpub/chocolab.local
+
+# Configure IIS remote management
+RUN Install-WindowsFeature Web-Mgmt-Service 1>$null;  \ 
+    New-ItemProperty -Path HKLM:\software\microsoft\WebManagement\Server -Name EnableRemoteManagement -Value 1 -Force 1>$null; \
+    Set-Service -Name wmsvc -StartupType automatic; \
+    Start-Service wmsvc; \
+    net user iisadmin Passw0rd /ADD; \
+    net localgroup administrators iisadmin /add;
