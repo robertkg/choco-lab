@@ -12,3 +12,4 @@ modules:
 - puppet/windows_env
 - puppetlabs/dsc_lite
 - puppetlabs/host_core
+- wandenberg/nexus3_rest
