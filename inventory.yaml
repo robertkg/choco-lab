@@ -1,10 +1,13 @@
 groups:
   - name: containers
     targets:
-      - name: chocoserver
+      # - name: chocoserver
+      #   uri: 127.0.0.1:55986
+      - name: nexus
         uri: 127.0.0.1:55986
       - name: client
         uri: 127.0.0.1:55987
+
     config:
       transport: winrm
       winrm:
