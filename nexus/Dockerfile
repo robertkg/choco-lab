@@ -12,18 +12,18 @@ RUN Set-DnsClientServerAddress -InterfaceIndex 4 -ServerAddresses 8.8.8.8, 8.8.4
     iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'));
 
 # Install Nexus 3 OSS
-RUN mkdir C:\Nexus 1>$null; \
-    mkdir C:\Temp 1>$null; \
+RUN mkdir C:\nexus 1>$null; \
+    mkdir C:\temp 1>$null; \
     $ProgressPreference = 'SilentlyContinue'; \
     # Latest version can be grabbed from https://download.sonatype.com/nexus/3/latest-win64.zip
-    Invoke-WebRequest -Uri https://download.sonatype.com/nexus/3/nexus-3.34.1-01-win64.zip -OutFile C:\Temp\nexus.zip; \
-    Expand-Archive C:\Temp\nexus.zip C:\Nexus; \
-    Remove-Item C:\Temp\nexus.zip;
+    Invoke-WebRequest -Uri https://download.sonatype.com/nexus/3/nexus-3.34.1-01-win64.zip -OutFile C:\temp\nexus.zip; \
+    Expand-Archive C:\temp\nexus.zip C:\nexus; \
+    Remove-Item C:\temp\nexus.zip;
 
 ADD nexus.properties C:/Nexus/sonatype-work/nexus3/etc/nexus.properties
 
-RUN & C:\Nexus\nexus-*\bin\nexus.exe /install nexus; \
-    & C:\Nexus\nexus-*\bin\nexus.exe /start; \ 
+RUN & C:\nexus\nexus-*\bin\nexus.exe /install nexus; \
+    & C:\nexus\nexus-*\bin\nexus.exe /start; \ 
     Set-Service nexus -StartupType Automatic;
 
 # Install IIS
@@ -49,3 +49,12 @@ RUN Install-WindowsFeature Web-Mgmt-Service 1>$null;  \
     Start-Service wmsvc; \
     net user iisadmin Passw0rd /ADD; \
     net localgroup administrators iisadmin /add;
+
+# Set up WinRM for HTTPS
+RUN $cert = New-SelfSignedCertificate -DnsName "winrm" -CertStoreLocation Cert:\LocalMachine\My; \
+    winrm create winrm/config/Listener?Address=*+Transport=HTTPS ('@{Hostname=\"winrm\"; CertificateThumbprint=\"' + $cert.Thumbprint + '\"}'); \
+    winrm set winrm/config/service/Auth '@{Basic=\"true\"}'
+
+# Create Bolt account
+RUN net user /add Bolt Passw0rd! /fullname:'Puppet Bolt' ; \
+    net localgroup Administrators Bolt /add
