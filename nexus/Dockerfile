@@ -15,7 +15,8 @@ RUN Set-DnsClientServerAddress -InterfaceIndex 4 -ServerAddresses 8.8.8.8, 8.8.4
 RUN mkdir C:\Nexus 1>$null; \
     mkdir C:\Temp 1>$null; \
     $ProgressPreference = 'SilentlyContinue'; \
-    Invoke-WebRequest -Uri https://download.sonatype.com/nexus/3/latest-win64.zip -OutFile C:\Temp\nexus.zip; \
+    # Latest version can be grabbed from https://download.sonatype.com/nexus/3/latest-win64.zip
+    Invoke-WebRequest -Uri https://download.sonatype.com/nexus/3/nexus-3.34.1-01-win64.zip -OutFile C:\Temp\nexus.zip; \
     Expand-Archive C:\Temp\nexus.zip C:\Nexus; \
     Remove-Item C:\Temp\nexus.zip;
 
@@ -32,6 +33,7 @@ RUN Install-WindowsFeature Web-Server, Web-Scripting-Tools, Web-Mgmt-Tools 1>$nu
 RUN mkdir C:\inetpub\chocolab.local 1>$null; \
     $cert = New-SelfSignedCertificate -Subject 'CN=chocolab.local'; \
     New-IISSite -Name chocolab.local -PhysicalPath "$env:systemdrive\inetpub\chocolab.local" -BindingInformation "*:443:" -CertificateThumbPrint $cert.Thumbprint -CertStoreLocation "Cert:\LocalMachine\My" -Protocol https 1>$null;
+ADD ./chocolab.local C:/inetpub/chocolab.local
 
 # Configure IIS reverse proxy
 RUN choco install urlrewrite, iis-arr -y; \
