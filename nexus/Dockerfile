@@ -22,8 +22,8 @@ RUN mkdir C:\Nexus 1>$null; \
 ADD nexus.properties C:/Nexus/sonatype-work/nexus3/etc/nexus.properties
 
 RUN & C:\Nexus\nexus-*\bin\nexus.exe /install nexus; \
-    Set-Service nexus -StartupType Automatic; \
-    Start-Service nexus;
+    & C:\Nexus\nexus-*\bin\nexus.exe /start; \ 
+    Set-Service nexus -StartupType Automatic;
 
 # Install IIS
 RUN Install-WindowsFeature Web-Server, Web-Scripting-Tools, Web-Mgmt-Tools 1>$null;
