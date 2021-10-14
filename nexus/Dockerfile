@@ -36,8 +36,9 @@ RUN Install-WindowsFeature Web-Mgmt-Service, Web-Scripting-Tools 1>$null;  \
 ADD site c:/inetpub/chocolab.local/
 ADD cert c:/temp
 RUN $pw = Get-Content C:\temp\chocolab.local.pfx.password | ConvertTo-SecureString -AsPlainText -Force; \
-    $cert = Import-PfxCertificate -Password $pw -CertStoreLocation Cert:\LocalMachine\Root\ -FilePath C:\temp\chocolab.local.pfx; \
-    New-IISSite -Name chocolab.local -PhysicalPath "$env:systemdrive\inetpub\chocolab.local" -BindingInformation "*:443:" -CertificateThumbPrint $cert.Thumbprint -CertStoreLocation "Cert:\LocalMachine\My" -Protocol https 1>$null; \
+    Import-PfxCertificate -Password $pw -CertStoreLocation Cert:\LocalMachine\Root\ -FilePath C:\temp\chocolab.local.pfx; \
+    $cert = Import-PfxCertificate -Password $pw -CertStoreLocation Cert:\LocalMachine\My\ -FilePath C:\temp\chocolab.local.pfx; \
+    New-IISSite -Name chocolab.local -PhysicalPath "$env:systemdrive\inetpub\chocolab.local" -BindingInformation "*:443:" -CertificateThumbPrint $cert.Thumbprint -CertStoreLocation Cert:\LocalMachine\My -Protocol https 1>$null; \
     Remove-Item C:\temp\chocolab.local.pfx*;
 
 # Configure IIS reverse proxy
