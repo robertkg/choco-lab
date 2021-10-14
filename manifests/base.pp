@@ -4,7 +4,7 @@
 class chocolab::base {
 
   # Indicators
-  file { 'C:/Puppet.txt':
+  file { 'C:/puppet.txt':
     ensure  => present,
     content => 'Managed by Puppet',
     owner   => system,
@@ -15,13 +15,13 @@ class chocolab::base {
   }
 
   # Base files
-  file { 'C:/Temp':
+  file { 'C:/temp':
     ensure => directory,
     owner  => system,
-    before => Acl['C:/Temp']
+    before => Acl['C:/temp']
   }
 
-  acl { 'C:/Temp':
+  acl { 'C:/temp':
     permissions => [
       { identity => 'Administrator', rights => ['full'] },
       { identity => 'Users', rights => ['read','execute'] }

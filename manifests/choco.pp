@@ -12,13 +12,6 @@ class chocolab::choco {
     ensure => 'present',
   }
 
-  if $facts['hostname'] == 'chocoserver' {
-    package { 'chocolatey.server':
-      ensure => 'present',
-      before => Chocolateysource['chocolatey'],
-    }
-  }
-
   host { 'chocolab.local':
     ensure  => present,
     ip      => '172.20.0.10',
@@ -32,7 +25,9 @@ class chocolab::choco {
 
   chocolateysource {'chocolab.local':
     ensure   => present,
-    location => 'http://chocolab.local/chocolatey',
+    location => 'https://chocolab.local/repository/chocolatey/',
+    user     => 'chocoread',
+    password => 'Passw0rd',
     require  => Host['chocolab.local'],
   }
 
