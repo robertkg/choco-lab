@@ -40,7 +40,7 @@ services:
       - '4433:443'
     tty: true
   client:
-    build: coreserver
+    build: client
     container_name: client
     dns:
       - 8.8.8.8
