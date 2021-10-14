@@ -22,9 +22,16 @@ Write-Output '----------- DOCKER COMPOSE -----------'
 docker-compose up -d --build --force-recreate
 if (!$?) { Write-Error 'docker-compose failed' }
 
+Write-Output '----------- CLIENT MANIFEST -----------'
+bolt apply --log-level debug .\manifests\client.pp -t client
+if (!$?) { Write-Error 'bolt apply failed' }
+
 Write-Output '----------- NEXUS MANIFEST -----------'
 bolt apply --log-level debug .\manifests\nexus.pp -t nexus
 if (!$?) { Write-Error 'bolt apply failed' }
+
+Write-Output '----------- NEXUS SETUP -----------'
+docker exec nexus powershell -nologo -noninteractive -noprofile -file 'c:\script\setup.ps1'
 
 # Write-Output '----------- PUSH PACKAGES -----------'
 # . $PSScriptRoot\src\Get-ChocolateyPackage.ps1
@@ -51,9 +58,5 @@ if (!$?) { Write-Error 'bolt apply failed' }
 
 # Push-ChocolateyPackage 'C:\Temp\*.nupkg' -Confirm:$false
 
-Write-Output '----------- CLIENT MANIFEST -----------'
-bolt apply --log-level debug .\manifests\client.pp -t client
-if (!$?) { Write-Error 'bolt apply failed' }
 
-Write-Output '----------- SETUP NEXUS -----------'
-docker exec nexus powershell -nologo -noninteractive -noprofile -file 'c:\script\setup.ps1'
+
