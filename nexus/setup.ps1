@@ -118,7 +118,7 @@ $rolePayload = @'
 }
 '@
 
-Invoke-RestMethod -Method Post -Uri "$serverAddress/v1/security/roles" -Body $rolePayload -ContentType $contentType -Headers $headers 1>$null
+Invoke-RestMethod -Method Post -Uri "$serverAddress/service/rest/v1/security/roles" -Body $rolePayload -ContentType $contentType -Headers $headers 1>$null
 Write-Host '- Created role nx-chocolatey-reader'
 
 $readerPayload = @'
@@ -135,7 +135,7 @@ $readerPayload = @'
 }
 '@
 
-Invoke-RestMethod -Method Post -Uri "$serverAddress/v1/security/users" -Body $readerPayload -ContentType $contentType -Headers $headers 1>$null
+Invoke-RestMethod -Method Post -Uri "$serverAddress/service/rest/v1/security/users" -Body $readerPayload -ContentType $contentType -Headers $headers 1>$null
 Write-Host '- Created user chocoread'
 #endregion
 
@@ -143,5 +143,5 @@ Write-Host '- Created user chocoread'
 if (Test-Path 'C:\nexus\sonatype-work\nexus3\admin.password') {
     $otp = (($Auth | Select-String "\S+\:(?'pw'.+)$").Matches.Groups | Where-Object Name -EQ pw).Value
     Write-Host "`nFirst-time setup of $serverAddress completed`n- Username: admin`n- OTP: $otp"
-    Write-Host '`nRemember to also change nuget version to V2 on chocolatey-proxy repository until ticket #28791 i resolved'
+    Write-Host "`nRemember to also change nuget version to V2 on chocolatey-proxy repository until ticket #28791 is resolved"
 }
