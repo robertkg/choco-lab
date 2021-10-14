@@ -1,4 +1,22 @@
+#Requires -PSEdition Core
 $ErrorActionPreference = 'Stop'
+
+# Self-signed SSL certificate for chocolab.local
+do {
+    $prompt = Read-Host 'Generate SSL certificate for site? [y/n]'
+    if ($prompt -match '^y$') {
+        $cerPath = "$PSScriptRoot\client\cert\chocolab.local.cer"
+        $pfxPath = "$PSScriptRoot\nexus\cert\chocolab.local.pfx"
+
+        $guid = (New-Guid).Guid
+        $guid | Out-File "$pfxPath`.password"
+        $pfxPassword = $guid | ConvertTo-SecureString -AsPlainText
+        $cert = New-SelfSignedCertificate -CertStoreLocation Cert:\CurrentUser\My\ -DnsName chocolab.local -Subject 'CN=chocolab.local'
+        Export-PfxCertificate -Cert $cert -Password $pfxPassword -FilePath $pfxPath 1>$null
+        Export-Certificate -Cert $cert -Type CERT -FilePath $cerPath 1>$null
+        Remove-Item "Cert:\CurrentUser\My\$($cert.Thumbprint)"
+    }
+} while ($prompt -notmatch '^y|n$')
 
 Write-Output '----------- DOCKER COMPOSE -----------'
 docker-compose up -d --build --force-recreate

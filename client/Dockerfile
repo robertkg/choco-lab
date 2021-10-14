@@ -20,3 +20,7 @@ RUN Set-DnsClientServerAddress -InterfaceIndex 4 -ServerAddresses 8.8.8.8, 8.8.4
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; \
     iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'));
 
+# Import chocolab self-signed certificate
+ADD cert c:/temp
+RUN Import-Certificate -FilePath C:\temp\chocolab.local.cer -CertStoreLocation Cert:\LocalMachine\Root\ 1>$null; \
+    Remove-Item C:\temp\chocolab.local.cer;
