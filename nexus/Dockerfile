@@ -36,7 +36,7 @@ RUN Install-WindowsFeature Web-Mgmt-Service, Web-Scripting-Tools 1>$null;  \
 ADD site c:/inetpub/chocolab.local/
 ADD cert c:/temp
 RUN $pw = Get-Content C:\temp\chocolab.local.pfx.password | ConvertTo-SecureString -AsPlainText -Force; \
-    $cert = Import-PfxCertificate -Password $pw -CertStoreLocation Cert:\LocalMachine\My\ -FilePath C:\temp\chocolab.local.pfx; \
+    $cert = Import-PfxCertificate -Password $pw -CertStoreLocation Cert:\LocalMachine\Root\ -FilePath C:\temp\chocolab.local.pfx; \
     New-IISSite -Name chocolab.local -PhysicalPath "$env:systemdrive\inetpub\chocolab.local" -BindingInformation "*:443:" -CertificateThumbPrint $cert.Thumbprint -CertStoreLocation "Cert:\LocalMachine\My" -Protocol https 1>$null; \
     Remove-Item C:\temp\chocolab.local.pfx*;
 
@@ -54,3 +54,6 @@ RUN $cert = New-SelfSignedCertificate -DnsName "winrm" -CertStoreLocation Cert:\
 # Create Bolt account
 RUN net user /add Bolt Passw0rd! /fullname:'Puppet Bolt' ; \
     net localgroup Administrators Bolt /add
+
+RUN mkdir c:/script 1>$null
+ADD setup.ps1 c:/script

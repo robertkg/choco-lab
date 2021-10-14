@@ -56,4 +56,4 @@ bolt apply --log-level debug .\manifests\client.pp -t client
 if (!$?) { Write-Error 'bolt apply failed' }
 
 Write-Output '----------- SETUP NEXUS -----------'
-docker exec nexus powershell -nologo -noninteractive -noprofile -file 'c:\script\repo-setup.ps1'
+docker exec nexus powershell -nologo -noninteractive -noprofile -file 'c:\script\setup.ps1'
